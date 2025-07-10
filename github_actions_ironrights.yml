@@ -1,0 +1,43 @@
+name: Deploy IronRights to Render
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies (Frontend)
+      working-directory: apps/frontend
+      run: npm install
+
+    - name: Build frontend
+      working-directory: apps/frontend
+      run: npm run build
+
+    - name: Install backend dependencies
+      working-directory: apps/backend
+      run: npm install
+
+    - name: Install crawler dependencies
+      working-directory: crawler
+      run: npm install
+
+    - name: Install Python dependencies
+      working-directory: ai-licensing-engine
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Deploy with Render Blueprint (Optional)
+      run: echo "Deploy via Render UI using render.yaml"
