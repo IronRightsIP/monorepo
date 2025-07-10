@@ -1,0 +1,24 @@
+services:
+  - type: web
+    env: node
+    rootDir: apps/frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+
+  - type: web
+    env: node
+    rootDir: apps/backend
+    buildCommand: npm install
+    startCommand: npm run start
+
+  - type: worker
+    env: node
+    rootDir: crawler
+    buildCommand: npm install
+    startCommand: npm run start
+
+  - type: web
+    env: python
+    rootDir: ai-licensing-engine
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port 8000
